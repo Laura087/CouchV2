@@ -1,0 +1,21 @@
+    {
+    	"modeChange" : 1,
+    	"debug" : 1,
+    	
+    	"anIDs" : [1, 0, 3, 2, 4, 15],
+     
+   		"compNames" : ["Button 0", "Button 1", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8", "Button 9", "Hat Switch", "X Axis", "Y Axis", "X Rotation", "Y Rotation", "Z Axis"],
+   		
+   		"defaultContSys" : "Normal Driver",
+   		"minHoldTime" : 0.1,
+   		
+   		"screenType" : "Virtual Screen",
+   		
+   		"wheelbase" : 2,
+   		"track" : 1,
+   		
+   		"maxForwardSpeed" : 1,
+   		"maxRotationalSpeed" : 0.25,
+   		
+   		"maxDevices" : 5
+    }

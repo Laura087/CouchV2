@@ -1,0 +1,31 @@
+The configuration file is used to change settings of the couch
+
+Path to the configuration file is set in Couch.java
+
+GENERAL SETTINGS
+mode change: enables or disables changing of controller modes
+debug: enables or disables printing of additional debug info
+
+CONTROLLER SETTINGS
+anIDs: component numbers of the Left X-axis (LX), LY, RX, RY, Z and HAT in that order
+compNames: component names of the buttons A, B, X, Y, left bumper, right bumper, back, start, left stick, right stick, d-pad, leftx-axis (LX), LY, RX, RY, and Z axis in this order
+defaultContSys: initial control scheme used options include "Basic Tester", "Normal Driver" and "Simple Driver", uses Basic Tester if this string is unrecognised
+minHoldTime: minimum time button must be held to be considered "held" and not "presses"
+
+SCREEN
+screenType : options include "Console", "Virtual Screen" and "Screen"
+
+STRUCTURE
+wheelbase : distance between "axles"
+track : distance between wheels
+
+MOTION
+maxForwardSpeed : double between 0 and 1
+maxRotationalSpeed : double between 0 and 1
+
+USB DEVICE SETTINGS
+maxDevices : maximum number of usb devices supported
+
+MOTORS
+Most constants for motor communication, including commands, VID and PID are set in Motors.java
+

@@ -12,6 +12,8 @@ Mecanum Couch Project Version 2 includes comms with motor controllers
 
 --With the default control scheme, holding the right trigger and moving the thumbsticks should change the motor values
 
+--Currently checking status and faults is disabled
+
 
 ###The CONFIG file
 

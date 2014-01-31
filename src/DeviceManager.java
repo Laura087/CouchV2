@@ -119,6 +119,9 @@ public class DeviceManager{
 			}
 		}
 		LibUsb.freeDeviceList(list, true);
+		if(result == -1){
+			System.out.println("NO device found");
+		}
 		return result;
 	}
 	

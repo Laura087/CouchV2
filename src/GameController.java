@@ -33,7 +33,6 @@ public class GameController{
 		} else {
 			contSys = new NormalDriver(wheels, baseData);
 		}
-
 	}
 	
 	public String init(){
@@ -58,9 +57,9 @@ public class GameController{
 			result = "Controller Found: " + "\n\t" + cont.getName() + ", " + cont.getType();
 			 /* Get this controllers components (buttons and axis) */
 		    Component[] components = cont.getComponents();
-		    //result = result.concat("\n\tComponent Count: "+components.length);
+		    result = result.concat("\n\tComponent Count: "+components.length);
 		    for(int j=0;j<components.length;j++){
-		       // result = result.concat("\n\t\tComponent "+j+": "+components[j].getName());
+		        result = result.concat("\n\t\tComponent "+j+": "+components[j].getName());
 		    }
 			cont.poll();
 			events = cont.getEventQueue();
@@ -186,6 +185,26 @@ public class GameController{
 			} 
 		}
 		//Do i want to update sticks every time they change or after an elapsed time?
+	}
+	
+	public void configure(Display screen){
+		screen.printLine("Configuring Controller");
+		String[] compNames = new String[16];
+		compNames[0] = " ";
+		Event current = new Event();
+		Component nextThing;
+		screen.printLine("Press A");
+		while(compNames[0].equals(" ")){
+			cont.poll();
+			while(events.getNextEvent(current)){
+				nextThing = current.getComponent();
+				if (nextThing != null && !nextThing.isAnalog()){
+					compNames[0] = nextThing.getName();
+				}
+			}
+
+		}
+		screen.printLine("A has the component name "+ compNames[0]);
 	}
 	
 	public void updateWheels(){

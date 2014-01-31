@@ -77,7 +77,11 @@ public class Motors {
 		runMode = true;
 		idiotStop = false;
 		eStop = false;
-		checkSysState();
+		//TODO remove the surrounding if
+		if(mC != -1){
+			checkSysState();
+
+		}
 	}
 	
 	//Getters
@@ -105,7 +109,11 @@ public class Motors {
 		}
 	}
 
-	public int update(double[] vel){		
+	public int update(double[] vel){
+		//TODO remove after testing this just lets it run with no motor controllers
+		if(mC == -1){
+			return 0;
+		}
 		//checkMotorConnection();
 		if(!motorConnection){
 			String[] comLost = {"NO COMS", "NO COMS", "NO COMS", "NO COMS"};
@@ -166,7 +174,7 @@ public class Motors {
 //				checkFaults();
 //			}
 //		}
-		
+		checkFaults();
 	}
 	
 	private void checkFaults(){
@@ -174,7 +182,7 @@ public class Motors {
 		byte[] response = new byte[64];
 		data[0] = H_READ_FAULT_STATE;
 		response = devices.sendData(data, mC);
-		if(checkResponse(response, data[0]) != Motors.OK){
+		if(checkResponse(response, C_FAULT) != Motors.OK){
 			System.out.println("DATA ERROR ON FAULT STATE CHECK");
 		} else {
 			faults = ALL_OK;

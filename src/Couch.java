@@ -20,15 +20,12 @@ public class Couch {
     
     private boolean MODE_CHANGE;
     private boolean DEBUG;
-	
-	private static final String CONFIG_FILE_PATH = "CONFIG";
-
 
 
 	
-	public Couch() throws FileNotFoundException{
+	public Couch(String configFilePath) throws FileNotFoundException{
         
-		Reader in = new FileReader(CONFIG_FILE_PATH);
+		Reader in = new FileReader(configFilePath);
         JSONTokener jtk = new JSONTokener(in);
         config = new JSONObject(jtk);	
         
@@ -71,7 +68,9 @@ public class Couch {
 		}
 		if (controlDebug.startsWith("Error")){
 			screen.printLine("Controller Initialisation Error");
-		}		
+		}	else if (config.getInt("configured") == 0){
+			controller.configure(screen);
+		}
 		
 		screen.updateWheelData(wheels.getVels(), wheels.getFaultStates());
 	}
@@ -103,9 +102,5 @@ public class Couch {
 			screen.updateWheelData(wheels.getVels(), wheels.getFaultStates());
 		}
 		screen.printLine("Controller Disconnected");
-	}
-	
-	public void setup(){
-		//TODO
 	}
 }

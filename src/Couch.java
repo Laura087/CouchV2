@@ -58,6 +58,7 @@ public class Couch {
 						screen, 
 						convertStringArray(config.getJSONArray("compNames")), 
 						convertIntArray(config.getJSONArray("anIDs")), 
+						(config.getInt("zInversion") == 1),
 						config.getString("defaultContSys"), 
 						config.getDouble("minHoldTime"),
 						baseData

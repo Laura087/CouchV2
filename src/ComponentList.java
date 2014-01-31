@@ -25,12 +25,12 @@ public class ComponentList {
 	
 	//Axis designations
 	//Axes
+	public int AXIS_HAT;
 	public int AXIS_LX; //left stick x axis
 	public int AXIS_LY;
 	public int AXIS_RX;
 	public int AXIS_RY;
 	public int AXIS_Z;
-	public int AXIS_HAT;
 	
 	//other
 	public String HAT;
@@ -53,12 +53,12 @@ public class ComponentList {
 		RX = compNames[13];
 		RY = compNames[14];
 		Z = compNames[15];
-		AXIS_LX = anIDs[0];
-		AXIS_LY = anIDs[1];
-		AXIS_RX = anIDs[2];
-		AXIS_RY = anIDs[3];
-		AXIS_Z = anIDs[4];
-		AXIS_HAT = anIDs[5];
+		AXIS_HAT = anIDs[0];
+		AXIS_LX = anIDs[1];
+		AXIS_LY = anIDs[2];
+		AXIS_RX = anIDs[3];
+		AXIS_RY = anIDs[4];
+		AXIS_Z = anIDs[5];
 	}
 	
 	//TODO allow configuration of controller so you can write to the JSON file

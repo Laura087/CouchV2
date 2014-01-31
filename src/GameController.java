@@ -8,6 +8,7 @@ public class GameController{
 	private EventQueue events;
 	private int numAnalogEvents;
 	private Component[] comps;
+	private boolean zInverted;
 	
 	//TODO remove later this is just for testing
 	public int numEvents;
@@ -18,10 +19,11 @@ public class GameController{
 	private static final int ANALOG_NOISE_FILTER = 20;
 	
 	//TODO remove screen
-	public GameController(Wheels wheels, Display screen, String[] compNames, int[] anIDs, String defaultScheme, double holdTime, double[] baseData){
+	public GameController(Wheels wheels, Display screen, String[] compNames, int[] anIDs, boolean zInverted, String defaultScheme, double holdTime, double[] baseData){
 		compID = new ComponentList(compNames, anIDs);
 		numEvents = 0;
 		numAnalogEvents = 0;
+		this.zInverted = zInverted;
 		MIN_HOLD_TIME = holdTime;
 		
 		if(defaultScheme.equals("Basic Tester")){
@@ -188,31 +190,95 @@ public class GameController{
 	}
 	
 	public void configure(Display screen){
+		int i, j, k;
 		screen.printLine("Configuring Controller");
 		String[] compNames = new String[16];
-		compNames[0] = " ";
+		int[] anIds = new int[6];
+		int[] inverted = {1, 1, 1, 1, 1, 1};
 		Event current = new Event();
 		Component nextThing;
-		screen.printLine("Press A");
-		while(compNames[0].equals(" ")){
-			cont.poll();
+		String[] descriptors = {"A", "B", "X", "Y", "Left Bumper", "Right Bumper", "BACK", "START", "Left Stick", "Right Stick", "D-Pad to the left", "Left X right", "Left Y down", "Right X right", "Right Y down", "Right Trigger in"};
+		int numComps = descriptors.length;
+		Component[] components = cont.getComponents();
+		for(i = 0; i < 10; i++){
+		   compNames[i] = " ";
+		   screen.printLine("Press " + descriptors[i]);
+		   screen.printLine("");
+		   while(compNames[i].equals(" ")){
+		  	cont.poll();
 			while(events.getNextEvent(current)){
 				nextThing = current.getComponent();
-				if (nextThing != null && !nextThing.isAnalog()){
-					compNames[0] = nextThing.getName();
+				if (nextThing != null && !nextThing.isAnalog() && nextThing.getPollData() == 1.0){
+					compNames[i] = nextThing.getName();
 				}
 			}
 
+		   }
+		   screen.printLine(descriptors[i] + " has the component name "+ compNames[i]);
+		   screen.printLine("");
+
 		}
-		screen.printLine("A has the component name "+ compNames[0]);
+		k = 0;
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		cont.poll();
+		while(i < numComps){
+			compNames[i] = " ";
+			screen.printLine("Move " + descriptors[i]);
+			screen.printLine("");
+			while(compNames[i].equals(" ")){
+			   cont.poll();
+			   while(events.getNextEvent(current)){
+			      nextThing = current.getComponent();
+				  if (nextThing != null /*&& nextThing.isAnalog()*/ && Math.abs(nextThing.getPollData()) > 0.5){
+						compNames[i] = nextThing.getName();
+						j = 0;
+						while(nextThing != components[j]){
+							j++;
+						}
+						anIds[k] = j;
+						if(nextThing.getPollData() < 0){
+							zInverted = true;
+						}
+						k++;
+						screen.printLine("ID is " + j);
+						screen.printLine("");
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				  }
+				}
+		  }
+   		 i++;
+
+	  }
+		compID = new ComponentList(compNames, anIds);
 	}
 	
 	public void updateWheels(){
+		float zValue;
+		if(zInverted){
+		   zValue = 1.0f - (comps[compID.AXIS_Z].getPollData()-1.0f)/-2.0f;
+		} else {
+		   zValue = comps[compID.AXIS_Z].getPollData();
+			
+		   zValue *= -1;
+		   if(zValue < 0.01){
+		      zValue = 0;
+		   }
+		}
 		contSys.update(comps[compID.AXIS_LX].getPollData(), 
 						comps[compID.AXIS_LY].getPollData(), 
 						comps[compID.AXIS_RX].getPollData(), 
 						comps[compID.AXIS_RY].getPollData(), 
-						comps[compID.AXIS_Z].getPollData(), 
+						zValue, 
 						comps[compID.AXIS_HAT].getPollData());
 	}
 	

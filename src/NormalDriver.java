@@ -15,11 +15,7 @@ public class NormalDriver implements ControlSys{
 			base.setVx(LX);
 			base.setVy(LY*-1);
 		}
-		
-		Z *= -1;
-		if(Z < 0.01){
-			Z = 0;
-		}
+
 		base.setSpeed(Z);
 		base.updateWheels();
 		//TODO manage noise (see line 245 newControlV2.py)

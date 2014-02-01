@@ -3,9 +3,9 @@
     	"debug" : 1,
     	
         "configured" : 0,
-    	"anIDs" : [1, 0, 3, 2, 4, 15],
+    	"anIDs" : [11, 12, 14, 15, 16, 17],
         "zInversion" : 0,
-   		"compNames" : ["Button 0", "Button 1", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8", "Button 9", "Hat Switch", "X Axis", "Y Axis", "X Rotation", "Y Rotation", "Z Axis"],
+   		"compNames" : ["A", "B", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8", "Button 9", "pov", "X Axis", "Y Axis", "X Rotation", "Y Rotation", "Z Axis"],
    		
    		"defaultContSys" : "Normal Driver",
    		"minHoldTime" : 0.1,

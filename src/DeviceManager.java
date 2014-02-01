@@ -140,7 +140,7 @@ public class DeviceManager{
 	 */
 	public byte[] sendData(byte[] dataOut, int ID){
 		try {
-		    Thread.sleep(5);
+		    Thread.sleep(10);
 		} catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
 		}

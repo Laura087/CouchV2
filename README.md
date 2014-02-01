@@ -31,7 +31,7 @@ java -Djava.library.path=lib/Controller/natives -cp bin;lib;lib/Controller/jinpu
 
 ####LINUX - working, controller requires manual configuration (follow prompts as it runs)
 
-javac -d bin -sourcepath src -cp bin;lib/Controller/jinput.jar;lib/Usb/commons-lang3-3.1.jar;lib/Usb/usb4java-1.0.0.jar;lib/Usb/usb-api-1.0.2.jar src/Main.java
+javac -d bin -sourcepath src -cp bin:lib/Controller/jinput.jar:lib/Usb/commons-lang3-3.1.jar:lib/Usb/usb4java-1.0.0.jar:lib/Usb/usb-api-1.0.2.jar src/Main.java
 
 java -Djava.library.path=lib/Controller/natives -Djinput.plugins=net.java.games.input.LinuxEnvironmentPlugin -cp bin:lib:lib/Controller/jinput.jar:lib/Usb/commons-lang3-3.1.jar:lib/Usb/usb4java-1.0.0.jar:lib/Usb/usb-api-1.0.2.jar Main CONFIG-linux
 

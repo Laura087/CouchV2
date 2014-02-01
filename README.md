@@ -29,11 +29,18 @@ javac -d bin -sourcepath src -cp bin;lib/Controller/jinput.jar;lib/Usb/commons-l
 java -Djava.library.path=lib/Controller/natives -cp bin;lib;lib/Controller/jinput.jar;lib/Usb/commons-lang3-3.1.jar;lib/Usb/usb4java-1.0.0.jar;lib/Usb/usb-api.1.0.2.jar Main CONFIG-windows
 
 
-####LINUX - running but controller not configured 
+####LINUX - working, controller requires manual configuration (follow prompts as it runs)
 
 javac -d bin -sourcepath src -cp bin;lib/Controller/jinput.jar;lib/Usb/commons-lang3-3.1.jar;lib/Usb/usb4java-1.0.0.jar;lib/Usb/usb-api-1.0.2.jar src/Main.java
 
-java -Djava.library.path=lib/Controller/natives -Djinput.plugins=net.java.games.input.LinuxEnvironmentPlugin -cp bin;lib;lib/Controller/jinput.jar;lib/Usb/commons-lang3-3.1.jar;lib/Usb/usb4java-1.0.0.jar;lib/Usb/usb-api.1.0.2.jar Main CONFIG-linux
+java -Djava.library.path=lib/Controller/natives -Djinput.plugins=net.java.games.input.LinuxEnvironmentPlugin -cp bin:lib:lib/Controller/jinput.jar:lib/Usb/commons-lang3-3.1.jar:lib/Usb/usb4java-1.0.0.jar:lib/Usb/usb-api-1.0.2.jar Main CONFIG-linux
 
-####LINUX ARM (Rasperry Pi) - not supported yet
+####LINUX ARM (Rasperry Pi) - stripped version working, but no communication with motor controllers
+
+USE STIPPED VERSION
+
+javac -d bin -sourcepath src -cp bin:lib/Controller/jinput.jar: src/Main.java
+
+java -Djava.library.path=lib/Controller/natives -Djinput.plugins=net.java.games.input.LinuxEnvironmentPlugin -cp bin:lib:lib/Controller/jinput.jar: Main CONFIG-linux
+
 

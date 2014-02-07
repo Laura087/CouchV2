@@ -76,7 +76,11 @@ public class Wheels {
 			return;
 		} else {
 			//TODO figure out what to do
-			System.out.println("CANNOT RESET");
+			System.out.print("CANNOT RESET");
+			if(result == Motors.NO_MCS){
+				System.out.print(" No controllers connected");
+			}
+			System.out.print("\n");
 		}
 	}
 	

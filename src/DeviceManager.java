@@ -149,39 +149,38 @@ public class DeviceManager{
 		toSend.put(dataOut);
 		int result = LibUsb.bulkTransfer(handles[ID], MC_OUT_ENDPOINT, toSend, IntBuffer.wrap(new int[64]), 5000);
 		if(result != 0){
-			screen.print("Data Transmission Error : ");
-		} 
-		if(result == LibUsb.ERROR_TIMEOUT){
-			screen.print("Timeout");
-		} else if(result == LibUsb.ERROR_PIPE){
-			screen.print("Endpoint halted");
-		} else if(result == LibUsb.ERROR_OVERFLOW){
-			screen.print("Overflow");
-		} else if(result == LibUsb.ERROR_NO_DEVICE){
-			screen.print("Device Disconnected");
-		}
-		if(result != 0){
+			screen.print("Data Out Error : (DevMan.sendData()");
+			if(result == LibUsb.ERROR_TIMEOUT){
+				screen.print("Timeout");
+			} else if(result == LibUsb.ERROR_PIPE){
+				screen.print("Endpoint halted");
+			} else if(result == LibUsb.ERROR_OVERFLOW){
+				screen.print("Overflow");
+			} else if(result == LibUsb.ERROR_NO_DEVICE){
+				screen.print("Device Disconnected");
+			}
 			screen.printLine(" ");
-		}
+		} 
+
 		
 		//RECIEVE
 		ByteBuffer returned = ByteBuffer.allocateDirect(64);
 		result = LibUsb.bulkTransfer(handles[ID], MC_IN_ENDPOINT, returned, IntBuffer.wrap(new int[64]), 5000);
 		if(result != 0){
-			screen.print("Data Transmission Error : ");
-		} 
-		if(result == LibUsb.ERROR_TIMEOUT){
-			screen.print("Timeout");
-		} else if(result == LibUsb.ERROR_PIPE){
-			screen.print("Endpoint halted");
-		} else if(result == LibUsb.ERROR_OVERFLOW){
-			screen.print("Overflow");
-		} else if(result == LibUsb.ERROR_NO_DEVICE){
-			screen.print("Device Disconnected");
-		}
-		if(result != 0){
+			screen.print("Data In Error : (DevMan.sendData()");
+			if(result == LibUsb.ERROR_TIMEOUT){
+				screen.print("Timeout");
+			} else if(result == LibUsb.ERROR_PIPE){
+				screen.print("Endpoint halted");
+			} else if(result == LibUsb.ERROR_OVERFLOW){
+				screen.print("Overflow");
+			} else if(result == LibUsb.ERROR_NO_DEVICE){
+				screen.print("Device Disconnected");
+			} else {
+				screen.print("Unknown, code " + Integer.toString(result));
+			}
 			screen.printLine(" ");
-		}
+		} 
 				
 		byte[] response = new byte[64];
 		returned.get(response);

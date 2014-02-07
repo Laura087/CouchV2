@@ -55,6 +55,8 @@ public class Motors {
 	public static final int MAL = 1;
 	public static final int NO_RESP = 2;
 	public static final int DATA_ERR = 3;
+	public static final int NO_MCS = 4;
+
 	
 	//Fault Codes
 	public static final byte CONT_TEMP = 'B';
@@ -133,11 +135,15 @@ public class Motors {
 	}
 	
 	public int reset(){
-		byte[] data = new byte[64];
-		byte[] response = new byte[64];
-		data[0] = H_RESET_FAULT;
-		response = devices.sendData(data, mC);
-		return checkResponse(response, data[0]);
+		if(mC != -1){
+			byte[] data = new byte[64];
+			byte[] response = new byte[64];
+			data[0] = H_RESET_FAULT;
+			response = devices.sendData(data, mC);
+			return checkResponse(response, data[0]);
+		} else {
+			return NO_MCS;
+		}
 	}
 	
 	private void checkMotorConnection(){
@@ -202,21 +208,22 @@ public class Motors {
 	}
 	
 	private int checkResponse(byte[] response, byte expected){
-		if (response[0] == C_ACK){
-			if (response[1] == expected){
+		if (response[0] == C_ACK && response[1] == expected){
 				return OK;
-			} else {
-				return DATA_ERR;
-			}
+		}
+		System.out.print("MC resp unexpected: (Motors.checkResp()) ");
+		if (response[0] == C_ACK) {
+			System.out.println("Wrong ack");
+			return DATA_ERR;
 		} else if (response[0] == C_MAL){
-			System.out.println("mal");
+			System.out.println("Mal");
 			malPackets++;
 			return MAL;
 		} else if (response[0] == C_CANNOT_RESPOND){
-			System.out.println("no resp");
+			System.out.println("No resp");
 			return NO_RESP;
 		} else {
-			System.out.println("data error " + response[0]);
+			System.out.println("Data error " + response[0]);
 			return DATA_ERR;
 		}
 	}

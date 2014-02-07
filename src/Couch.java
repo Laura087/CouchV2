@@ -1,13 +1,17 @@
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.Reader;
+import java.io.File;
+import java.io.IOException;
 
 import javax.usb.UsbDevice;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.json.CDL;
 
 
 public class Couch {
@@ -69,15 +73,37 @@ public class Couch {
 		}
 		if (controlDebug.startsWith("Error")){
 			screen.printLine("Controller Initialisation Error");
-		}	else if (config.getInt("configured") == 0){
-			controller.configure(screen);
+		} else if (config.getInt("configured") == 0){
+		        CalibData data = controller.configure(screen);
+			config.put("configured", 1);
+			config.put("compNames", convertStrings(data.compNames));
+			config.put("anIDs", convertInts(data.anIds));
+			config.put("zInversion", data.zInv);
+			try{
+				File newConfig = new File(configFilePath);
+				FileWriter out = new FileWriter(newConfig);
+				config.write(out);
+				out.close();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
 		}
-		
 		screen.updateWheelData(wheels.getVels(), wheels.getFaultStates());
 	}
 	
 	public boolean hasController(){
 		return (controller.hasControl());
+	}
+
+	
+	public void run(){
+		while(controller.poll()){
+			controller.scanController();
+			controller.updateWheels();
+			screen.updateWheelData(wheels.getVels(), wheels.getFaultStates());
+			System.out.print("*");
+		}
+		screen.printLine("Controller Disconnected");
 	}
 	
 	private int[] convertIntArray(JSONArray array){
@@ -95,13 +121,23 @@ public class Couch {
 		}
 		return result;
 	}
-	
-	public void run(){
-		while(controller.poll()){
-			controller.scanController();
-			controller.updateWheels();
-			screen.updateWheelData(wheels.getVels(), wheels.getFaultStates());
+
+	private JSONArray convertStrings(String[] strings){
+		String allStrings = strings[0];
+		int numStrings = strings.length;
+		for(int i = 1; i < numStrings; i++){
+			allStrings = allStrings.concat(", " + strings[i]);
 		}
-		screen.printLine("Controller Disconnected");
+		return CDL.rowToJSONArray(new JSONTokener(allStrings));
 	}
+
+	private JSONArray convertInts(int[] ints){
+		String allInts = Integer.toString(ints[0]);
+		int numInts = ints.length;
+		for(int i = 1; i < numInts; i++){
+			allInts = allInts.concat(", " + ints[i]);
+		}
+		return CDL.rowToJSONArray(new JSONTokener(allInts));
+	}
+
 }

@@ -189,7 +189,7 @@ public class GameController{
 		//Do i want to update sticks every time they change or after an elapsed time?
 	}
 	
-	public void configure(Display screen){
+	public CalibData configure(Display screen){
 		int i, j, k;
 		screen.printLine("Configuring Controller");
 		String[] compNames = new String[16];
@@ -234,7 +234,7 @@ public class GameController{
 			   cont.poll();
 			   while(events.getNextEvent(current)){
 			      nextThing = current.getComponent();
-				  if (nextThing != null /*&& nextThing.isAnalog()*/ && Math.abs(nextThing.getPollData()) > 0.5){
+				  if (nextThing != null && Math.abs(nextThing.getPollData()) > 0.5){
 						compNames[i] = nextThing.getName();
 						j = 0;
 						while(nextThing != components[j]){
@@ -260,6 +260,8 @@ public class GameController{
 
 	  }
 		compID = new ComponentList(compNames, anIds);
+		return new CalibData(compNames, anIds, zInverted);
+		
 	}
 	
 	public void updateWheels(){

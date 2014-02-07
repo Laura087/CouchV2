@@ -101,7 +101,6 @@ public class Couch {
 			controller.scanController();
 			controller.updateWheels();
 			screen.updateWheelData(wheels.getVels(), wheels.getFaultStates());
-			System.out.print("*");
 		}
 		screen.printLine("Controller Disconnected");
 	}

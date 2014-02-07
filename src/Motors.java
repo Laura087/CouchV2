@@ -209,7 +209,9 @@ public class Motors {
 	
 	private int checkResponse(byte[] response, byte expected){
 		if (response[0] == C_ACK && response[1] == expected){
-				return OK;
+			return OK;
+		} else if (response[0] == C_FAULT && expected == C_FAULT){
+			return OK;
 		}
 		System.out.print("MC resp unexpected: (Motors.checkResp()) ");
 		if (response[0] == C_ACK) {

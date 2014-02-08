@@ -101,8 +101,20 @@ public class DeviceManager{
 			device = (Device)itr.next();
 			LibUsb.getDeviceDescriptor(device, desc);
 			if(desc.idProduct() == PID && desc.idVendor() == VID){
-				LibUsb.open(device, handle);
-				int claim = LibUsb.claimInterface(handle, MC_INT);
+				int claim = LibUsb.open(device, handle);
+				if(claim != 0){
+					screen.print("Error claiming device");
+					if(claim == LibUsb.ERROR_ACCESS){
+						screen.printLine("Permission Denied");
+					} else if (claim == LibUsb.ERROR_NO_MEM){
+						screen.printLine("Memory allocation error");
+					} else if (claim == LibUsb.ERROR_NO_DEVICE){
+						screen.printLine("Device Disconnected");
+					} else {
+						screen.printLine("Unknown");
+					}
+				}
+				claim = LibUsb.claimInterface(handle, MC_INT);
 				if(claim == 0){
 					screen.printLine("Found");
 					devices[ID] = device;

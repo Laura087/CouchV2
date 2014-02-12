@@ -26,7 +26,7 @@ The config file uses JSON to change settings for the couch in one place. However
 ###To RUN
 
 
-####WINDOWS - definitely working
+####WINDOWS - working
 
 javac -d bin -sourcepath src -cp bin;lib/Controller/jinput.jar;lib/Usb/commons-lang3-3.1.jar;lib/Usb/usb4java-1.0.0.jar;lib/Usb/usb-api-1.0.2.jar src/Main.java
 
@@ -40,18 +40,10 @@ mkdir bin
 ./compile
 ./run
 
-OR
+####LINUX ARM (Rasperry Pi) - so far working - testing incomplete
 
-javac -d bin -sourcepath src -cp bin:lib/Controller/jinput.jar:lib/Usb/commons-lang3-3.1.jar:lib/Usb/usb4java-1.0.0.jar:lib/Usb/usb-api-1.0.2.jar src/Main.java
-
-java -Djava.library.path=lib/Controller/natives -Djinput.plugins=net.java.games.input.LinuxEnvironmentPlugin -cp bin:lib:lib/Controller/jinput.jar:lib/Usb/commons-lang3-3.1.jar:lib/Usb/usb4java-1.0.0.jar:lib/Usb/usb-api-1.0.2.jar Main CONFIG-linux
-
-####LINUX ARM (Rasperry Pi) - stripped version working, but no communication with motor controllers
-
-USE STIPPED VERSION
-
-javac -d bin -sourcepath src -cp bin:lib/Controller/jinput.jar: src/Main.java
-
-java -Djava.library.path=lib/Controller/natives -Djinput.plugins=net.java.games.input.LinuxEnvironmentPlugin -cp bin:lib:lib/Controller/jinput.jar: Main CONFIG-linux
-
+TYPE:
+mkdir bin
+./compile-pi
+./run-pi
 

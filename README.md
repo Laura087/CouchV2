@@ -28,10 +28,9 @@ The config file uses JSON to change settings for the couch in one place. However
 
 ####WINDOWS - working
 
-javac -d bin -sourcepath src -cp bin;lib/Controller/jinput.jar;lib/Usb/commons-lang3-3.1.jar;lib/Usb/usb4java-1.0.0.jar;lib/Usb/usb-api-1.0.2.jar src/Main.java
-
-java -Djava.library.path=lib/Controller/natives -cp bin;lib;lib/Controller/jinput.jar;lib/Usb/commons-lang3-3.1.jar;lib/Usb/usb4java-1.0.0.jar;lib/Usb/usb-api.1.0.2.jar Main CONFIG-windows
-
+manually install the driver for libusb so the motor controllers work (im working on a way to package this)
+compile.bat
+run.bat
 
 ####LINUX - working
 

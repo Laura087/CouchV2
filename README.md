@@ -28,20 +28,26 @@ The config file uses JSON to change settings for the couch in one place. However
 
 ####WINDOWS - working
 
-manually install the driver for libusb so the motor controllers work (im working on a way to package this)
+manually install the driver for libusb so the motor controllers work (I have been using zadig to do this)
 compile.bat
 run.bat
 
 ####LINUX - working
 
-TYPE:
+In ubuntu the xbox controller driver is installed already
+In debian you need to apt-get install xboxdrv
+Then run it with sudo xboxdrv
+
 mkdir bin
 ./compile
 ./run
 
-####LINUX ARM (Rasperry Pi) - so far working - testing incomplete
+####LINUX ARM (Rasperry Pi - Raspbian) - so far working - testing incomplete
 
-TYPE:
+Only tested in raspbian
+apt-get install xboxdrv
+sudo xbox drv
+
 mkdir bin
 ./compile-pi
 ./run-pi

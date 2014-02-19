@@ -232,7 +232,7 @@ public class GameController{
 			screen.printLine("");
 			while(compNames[i].equals(" ")){
 			   cont.poll();
-			   while(events.getNextEvent(current)){
+			   while(events.getNextEvent(current) && compNames[i].equals(" ")){
 			      nextThing = current.getComponent();
 				  if (nextThing != null && Math.abs(nextThing.getPollData()) > 0.5){
 						compNames[i] = nextThing.getName();

@@ -56,8 +56,8 @@ public class DeviceManager{
 	private int MAX_DEVICES;
 	
 	private static final int MC_INT = 0;
-	private static final int MC_OUT_ENDPOINT = 1;
-	private static final int MC_IN_ENDPOINT = 129;
+	private static final byte MC_OUT_ENDPOINT = 1;
+	private static final byte MC_IN_ENDPOINT = 10; //129;
 	
 	
 	public DeviceManager(Display screen, boolean debug, int maxDevices){

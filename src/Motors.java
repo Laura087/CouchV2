@@ -79,10 +79,10 @@ public class Motors {
 		runMode = true;
 		idiotStop = false;
 		eStop = false;
-		//TODO remove the surrounding if
 		if(mC != -1){
-			checkSysState();
-
+		   //checkStatus
+			//TODO once above is working you can get rid of this
+		   checkSysState();
 		}
 	}
 	
@@ -112,14 +112,10 @@ public class Motors {
 	}
 
 	public int update(double[] vel){
-		//TODO remove after testing this just lets it run with no motor controllers
 		if(mC == -1){
-			return 0;
-		}
-		//checkMotorConnection();
-		if(!motorConnection){
 			String[] comLost = {"NO COMS", "NO COMS", "NO COMS", "NO COMS"};
 			faults = comLost;
+			return 0;
 		}
 		checkSysState();
 		
@@ -147,39 +143,41 @@ public class Motors {
 	}
 	
 	private void checkMotorConnection(){
+	//TODO
 		motorConnection = true;
 	}
 	
 	private void checkSysState(){
 
-		//TODO put back
-//		byte[] data = new byte[64];
-//		byte[] response = new byte[64];
-//		data[0] = H_READ_SYS_STATE;
-//		response = devices.sendData(data, mC);
-//		if(checkResponse(response, data[0]) != Motors.OK){
-//			System.out.println("DATA ERROR ON SYS STATE CHECK");
-//			checkFaults();
-//		} else {
-//			if (response[8] == 1){
-//				runMode = false;
-//			} else {
-//				runMode = true;
-//			}
-//			if (response[9] == 1){
-//				eStop = true;
-//			} else {
-//				eStop = false;
-//			}
-//			if (response[10] == 1){
-//				idiotStop = true;
-//			} else {
-//				idiotStop = false;
-//			}
-//			if (response[11] == 1){
-//				checkFaults();
-//			}
-//		}
+		byte[] data = new byte[64];
+		byte[] response = new byte[64];
+		data[0] = H_READ_SYS_STATE;
+		response = devices.sendData(data, mC);
+		if(checkResponse(response, data[0]) != Motors.OK){
+			System.out.println("DATA ERROR ON SYS STATE CHECK");
+			if(response[0] == C_CANNOT_RESPOND){
+            eStop = true;
+			}
+		} else {
+			if (response[8] == 1){
+				runMode = false;
+			} else {
+				runMode = true;
+			}
+			if (response[9] == 1){
+				eStop = true;
+			} else {
+				eStop = false;
+			}
+			if (response[10] == 1){
+				idiotStop = true;
+			} else {
+				idiotStop = false;
+			}
+			if (response[11] == 1){
+				checkFaults();
+			}
+		}
 		checkFaults();
 	}
 	

@@ -69,10 +69,11 @@ public class Couch {
 					);
 		String controlDebug = controller.init();
 		if (DEBUG){
-			screen.printLine(controlDebug);
+		//TODO decide if still want this	screen.printLine(controlDebug);
 		}
 		if (controlDebug.startsWith("Error")){
 			screen.printLine("Controller Initialisation Error");
+			screen.printLine(controlDebug);
 		} else if (config.getInt("configured") == 0){
 		        CalibData data = controller.configure(screen);
 			config.put("configured", 1);
@@ -101,6 +102,7 @@ public class Couch {
 			controller.scanController();
 			controller.updateWheels();
 			screen.updateWheelData(wheels.getVels(), wheels.getFaultStates());
+			screen.updateCouchData(wheels.getMode(), wheels.getIdiot(), wheels.getEStop());
 		}
 		screen.printLine("Controller Disconnected");
 	}

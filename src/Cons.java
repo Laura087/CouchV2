@@ -21,6 +21,11 @@ public class Cons implements Display {
 	}
 
 	@Override
+	public void updateCouchData(String mode, boolean idiot, boolean e) {
+
+	}
+
+	@Override
 	public void print(String s, boolean isDebugging) {
 		if(debug){
 			System.out.println(s);

@@ -57,7 +57,8 @@ public class DeviceManager{
 	
 	private static final int MC_INT = 0;
 	private static final byte MC_OUT_ENDPOINT = 1;
-	private static final byte MC_IN_ENDPOINT = 10; //129;
+	//TODO on the pi, this demands a byte
+	private static final int MC_IN_ENDPOINT = 129;
 	
 	
 	public DeviceManager(Display screen, boolean debug, int maxDevices){
@@ -132,7 +133,8 @@ public class DeviceManager{
 		}
 		LibUsb.freeDeviceList(list, true);
 		if(result == -1){
-			System.out.println("NO device found");
+			screen.printLine("Device NOT found");
+
 		}
 		return result;
 	}
@@ -251,13 +253,13 @@ public class DeviceManager{
         final UsbDeviceDescriptor desc = device.getUsbDeviceDescriptor();
         final byte iManufacturer = desc.iManufacturer();
         final byte iProduct = desc.iProduct();
-        if (iManufacturer == 0 || iProduct == 0) return;
+        if(!(iManufacturer == 0 || iProduct == 0)){
 
-        // Print the device info
-		screen.printLine(" ");
-	    screen.printLine(device.getString(iManufacturer) + " " + device.getString(iProduct));
-		screen.printLine("Vendor ID:" + desc.idVendor());
-		screen.printLine("PID:" + desc.idProduct());
-		screen.printLine(" ");
+           // Print the device info
+   	     screen.printLine(" ");
+	        screen.printLine(device.getString(iManufacturer) + " " + device.getString(iProduct));
+		     screen.printLine("Vendor ID:" + desc.idVendor());
+		     screen.printLine("PID:" + desc.idProduct());
+	     }
     }
 }

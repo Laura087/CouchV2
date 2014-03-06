@@ -5,4 +5,5 @@ public interface Display {
 	void print(String s, boolean isDebugging);
 	void printLine(String s, boolean isDebugging);
 	void updateWheelData(double[] vel, String[] status);
+	void updateCouchData(String mode, boolean idiot, boolean e);
 }

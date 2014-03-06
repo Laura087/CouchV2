@@ -48,6 +48,24 @@ public class Wheels {
 	public String[] getFaultStates(){
 		return faultStatus;
 	}
+
+   public String getMode(){
+	   return motors.getMode();
+	}
+
+	public boolean getIdiot(){
+	   return motors.isIdiotStop();
+	}
+
+	public boolean getEStop(){
+	   return motors.isEStop();
+   }
+
+//	public CouchState getCouchState(){
+	  //TODO replace above 3 with this return motors.getCouchState();
+//	}
+
+	
 	
 	//Other Functions
 	

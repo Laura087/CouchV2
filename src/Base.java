@@ -69,10 +69,10 @@ public class Base {
 
 		
 		
-		vels[Wheels.LF] = Vx + Vy - rot;
+		vels[Wheels.LF] = Vx + Vy + rot;
 		vels[Wheels.RF] = Vx - Vy + rot;
 		vels[Wheels.LR] = Vx - Vy - rot;
-		vels[Wheels.RR] = Vx + Vy + rot;
+		vels[Wheels.RR] = Vx + Vy - rot;
 		vels = scale(vels);
 
 				

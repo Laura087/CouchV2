@@ -48,7 +48,7 @@ public class Motors {
 	private static final byte C_CANNOT_RESPOND = 'F';
 	private static final byte C_CHARGE_STATUS = 'G';
 	private static final byte C_CHARGE_CHAR = 'H';
-	private static final byte C_SYSTEM_STATE = 'H';
+	private static final byte C_SYSTEM_STATE = 'I';
 	
 	//Controller responses
 	public static final int OK = 0;
@@ -208,8 +208,11 @@ public class Motors {
 	private int checkResponse(byte[] response, byte expected){
 		if (response[0] == C_ACK && response[1] == expected){
 			return OK;
-		} else if (response[0] == C_FAULT && expected == C_FAULT){
+		} else if (response[0] == C_FAULT /*&& expected == C_FAULT*/ ){
 			return OK;
+		} else if (response[0] == C_SYSTEM_STATE){
+			return OK;
+			//TODO fix this
 		}
 		System.out.print("MC resp unexpected: (Motors.checkResp()) ");
 		if (response[0] == C_ACK) {

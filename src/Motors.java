@@ -74,15 +74,19 @@ public class Motors {
 		malPackets = 0;
 		devices = deviceManager;
  		mC = devices.addDevice(MOTOR_VID, MOTOR_PID, "Motor Controllers");
-		String[] noCom = {"NO COMS", "NO COMS", "NO COMS", "NO COMS"};
-		//faults = noCom;
+		faults = ALL_OK;
+		//checkFaults();
 		//runMode = true;
 		//idiotStop = false;
 		//eStop = false;
 		if(mC != -1){
-			//TODO
+					
+		//TODO
 		   //checkStatus
 		   checkSysState();
+		} else {
+			String[] noCom = {"NO COMS", "NO COMS", "NO COMS", "NO COMS"};
+			faults = noCom;
 		}
 	}
 	
@@ -148,33 +152,32 @@ public class Motors {
 	}
 	
 	private void checkSysState(){
-
 		byte[] data = new byte[64];
 		byte[] response = new byte[64];
 		data[0] = H_READ_SYS_STATE;
 		response = devices.sendData(data, mC);
-		if(checkResponse(response, data[0]) != Motors.OK){
+		if(response[0] == C_CANNOT_RESPOND){
+            		eStop = true;
+		} else if(response[0] != C_SYSTEM_STATE){
 			System.out.println("DATA ERROR ON SYS STATE CHECK");
-			if(response[0] == C_CANNOT_RESPOND){
-            			eStop = true;
-			}
+			System.out.println(response[0]);
 		} else {
-			if ((response[1] & 1) == 1){
+			if ((response[1] & 1) != 0){
 				runMode = false;
 			} else {
 				runMode = true;
 			}
-			if ((response[1] & 2) == 1){
+			if ((response[1] & 2) != 0){
 				eStop = true;
 			} else {
 				eStop = false;
 			}
-			if ((response[1] & 4) == 1){
+			if ((response[1] & 4) != 0){
 				idiotStop = true;
 			} else {
 				idiotStop = false;
 			}
-			if ((response[1] & 8) == 1){
+			if ((response[1] & 8) != 0){
 				checkFaults();
 			}
 		}
@@ -188,56 +191,41 @@ public class Motors {
 		if(checkResponse(response, C_FAULT) != Motors.OK){
 			System.out.println("Motors.checkFaults() DATA ERROR ON FAULT STATE CHECK");
 		} else {
-			faults = ALL_OK;
-			byte code = data[1];
-			if(code == CONT_TEMP){
-				if(data[2] == 4){
-					for(int i = 0; i < 4; i++){
-						faults[i] = "Cont Temp"; 
-					}
-				} else {
-					faults[data[2]] = "Cont Temp";
+			System.out.println("Fault Code " + response[1] + "Source " + response[2] + "Byte 3" + response[3]);
+			String fault = faultToString(response[1]);
+			if (response[2] == 4){
+				for(int i = 0; i < 4; i++){
+					faults[i] = fault;
 				}
-			} else if (code == MOTOR_TEMP){
-				if(data[2] == 4){
-					for(int i = 0; i < 4; i++){
-						faults[i] = "Motor Temp"; 
-					}
-				} else {
-					faults[data[2]] = "Motor Temp";
-				}
-			} else if (code == MOTOR_CURRENT){
-				if(data[2] == 4){
-					for(int i = 0; i < 4; i++){
-						faults[i] = "Motor Current"; 
-					}
-				} else {
-					faults[data[2]] = "Motor Current";
-				}
-			} else if (code == BATTERY){
-				if(data[2] == 4){
-					for(int i = 0; i < 4; i++){
-						faults[i] = "Bat Flat"; 
-					}
-				} else {
-					faults[data[2]] = "Bat Flat";
-				}
-			} else if (code == FIRMWARE){
-				if(data[2] == 4){
-					for(int i = 0; i < 4; i++){
-						faults[i] = "Firmware"; 
-					}
-				} else {
-					faults[data[2]] = "Firmware";
-				}
+			} else {
+				faults[response[2]] = fault;
 			}
 		}
+	}
+
+	private String faultToString(int code){
+           if(code == FIRMWARE){
+		   return "Firmware";
+	   } else if (code == BATTERY){
+		   return "Bat Flat";
+	   } else if (code == MOTOR_CURRENT){
+		  return "Motor Curr";
+	   } else if (code == MOTOR_TEMP){
+		  return "Motor Temp";
+	   } else if (code == CONT_TEMP){
+		  return "Cont Temp";
+	   } else {
+		   return "Unknown";
+	   }	   
 	}
 	
 	private int checkResponse(byte[] response, byte expected){
 		if (response[0] == C_ACK && response[1] == expected){
 			return OK;
 		} else if (response[0] == C_FAULT && expected == C_FAULT){
+			return OK;
+		} else if (response[0] == C_CANNOT_RESPOND){
+			eStop = true;
 			return OK;
 		}
 		System.out.print("MC resp unexpected: (Motors.checkResp()) ");

@@ -77,7 +77,7 @@ public class Wheels {
 		int result = motors.update(velocities);
 		faultStatus = motors.getFaultStrings();
 		if(result != Motors.OK){
-			System.out.println("DATA ERROR ON UPDATE");
+			System.out.println("Wheels.updateMotors() DATA ERROR ON UPDATE");
 		}
 	}
 	

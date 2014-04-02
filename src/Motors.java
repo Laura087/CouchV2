@@ -75,13 +75,13 @@ public class Motors {
 		devices = deviceManager;
  		mC = devices.addDevice(MOTOR_VID, MOTOR_PID, "Motor Controllers");
 		String[] noCom = {"NO COMS", "NO COMS", "NO COMS", "NO COMS"};
-		faults = noCom;
-		runMode = true;
-		idiotStop = false;
-		eStop = false;
+		//faults = noCom;
+		//runMode = true;
+		//idiotStop = false;
+		//eStop = false;
 		if(mC != -1){
+			//TODO
 		   //checkStatus
-			//TODO once above is working you can get rid of this
 		   checkSysState();
 		}
 	}
@@ -156,29 +156,28 @@ public class Motors {
 		if(checkResponse(response, data[0]) != Motors.OK){
 			System.out.println("DATA ERROR ON SYS STATE CHECK");
 			if(response[0] == C_CANNOT_RESPOND){
-            eStop = true;
+            			eStop = true;
 			}
 		} else {
-			if (response[8] == 1){
+			if ((response[1] & 1) == 1){
 				runMode = false;
 			} else {
 				runMode = true;
 			}
-			if (response[9] == 1){
+			if ((response[1] & 2) == 1){
 				eStop = true;
 			} else {
 				eStop = false;
 			}
-			if (response[10] == 1){
+			if ((response[1] & 4) == 1){
 				idiotStop = true;
 			} else {
 				idiotStop = false;
 			}
-			if (response[11] == 1){
+			if ((response[1] & 8) == 1){
 				checkFaults();
 			}
 		}
-		checkFaults();
 	}
 	
 	private void checkFaults(){
@@ -187,20 +186,50 @@ public class Motors {
 		data[0] = H_READ_FAULT_STATE;
 		response = devices.sendData(data, mC);
 		if(checkResponse(response, C_FAULT) != Motors.OK){
-			System.out.println("DATA ERROR ON FAULT STATE CHECK");
+			System.out.println("Motors.checkFaults() DATA ERROR ON FAULT STATE CHECK");
 		} else {
 			faults = ALL_OK;
 			byte code = data[1];
 			if(code == CONT_TEMP){
-				faults[data[2]] = "Cont Temp";
+				if(data[2] == 4){
+					for(int i = 0; i < 4; i++){
+						faults[i] = "Cont Temp"; 
+					}
+				} else {
+					faults[data[2]] = "Cont Temp";
+				}
 			} else if (code == MOTOR_TEMP){
-				faults[data[2]] = "Motor Temp";
+				if(data[2] == 4){
+					for(int i = 0; i < 4; i++){
+						faults[i] = "Motor Temp"; 
+					}
+				} else {
+					faults[data[2]] = "Motor Temp";
+				}
 			} else if (code == MOTOR_CURRENT){
-				faults[data[2]] = "Motor Current";
+				if(data[2] == 4){
+					for(int i = 0; i < 4; i++){
+						faults[i] = "Motor Current"; 
+					}
+				} else {
+					faults[data[2]] = "Motor Current";
+				}
 			} else if (code == BATTERY){
-				faults[data[2]] = "Bat Flat";
+				if(data[2] == 4){
+					for(int i = 0; i < 4; i++){
+						faults[i] = "Bat Flat"; 
+					}
+				} else {
+					faults[data[2]] = "Bat Flat";
+				}
 			} else if (code == FIRMWARE){
-				faults[data[2]] = "Firmware";
+				if(data[2] == 4){
+					for(int i = 0; i < 4; i++){
+						faults[i] = "Firmware"; 
+					}
+				} else {
+					faults[data[2]] = "Firmware";
+				}
 			}
 		}
 	}
@@ -208,11 +237,8 @@ public class Motors {
 	private int checkResponse(byte[] response, byte expected){
 		if (response[0] == C_ACK && response[1] == expected){
 			return OK;
-		} else if (response[0] == C_FAULT /*&& expected == C_FAULT*/ ){
+		} else if (response[0] == C_FAULT && expected == C_FAULT){
 			return OK;
-		} else if (response[0] == C_SYSTEM_STATE){
-			return OK;
-			//TODO fix this
 		}
 		System.out.print("MC resp unexpected: (Motors.checkResp()) ");
 		if (response[0] == C_ACK) {

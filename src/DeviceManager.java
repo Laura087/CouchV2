@@ -163,7 +163,7 @@ public class DeviceManager{
 		toSend.put(dataOut);
 		int result = LibUsb.bulkTransfer(handles[ID], MC_OUT_ENDPOINT, toSend, IntBuffer.wrap(new int[64]), 5000);
 		if(result != 0){
-			screen.print("Data Out Error : (DevMan.sendData()");
+			screen.print("Data Out Error : (DeviceManager.sendData() sending");
 			if(result == LibUsb.ERROR_TIMEOUT){
 				screen.print("Timeout");
 			} else if(result == LibUsb.ERROR_PIPE){
@@ -181,7 +181,7 @@ public class DeviceManager{
 		ByteBuffer returned = ByteBuffer.allocateDirect(64);
 		result = LibUsb.bulkTransfer(handles[ID], MC_IN_ENDPOINT, returned, IntBuffer.wrap(new int[64]), 5000);
 		if(result != 0){
-			screen.print("Data In Error : (DevMan.sendData()");
+			screen.print("Data In Error : (DevManager.sendData() receiving");
 			if(result == LibUsb.ERROR_TIMEOUT){
 				screen.print("Timeout");
 			} else if(result == LibUsb.ERROR_PIPE){

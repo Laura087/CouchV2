@@ -42,13 +42,22 @@ mkdir bin
 ./compile
 ./run
 
-####LINUX ARM (Rasperry Pi - Raspbian) - so far working - testing incomplete
+####LINUX ARM (Rasperry Pi - Raspbian) - working
 
 Only tested in raspbian
-apt-get install xboxdrv
-sudo xbox drv
+sudo apt-get install xboxdrv
+sudo xboxdrv --silent &
 
-mkdir bin
-./compile-pi
+mkdir bin && ./compile-pi <br>
 ./run-pi
+
+Currently needs a Xserver to run so need to ssh into pi with option -X.
+
+To access pi without router give the pi a static ip add 
+ip=192.168.0.200:::255.255.255.0 to cmdline.txt in the boot section of the 
+sd card.
+
+The usb ports need to be rw so they can be accessed - 
+sudo chmod 777 -R /dev/bus/usb #seems to fix it
+
 

@@ -17,12 +17,12 @@ import javax.usb.UsbHostManager;
 import javax.usb.UsbHub;
 import javax.usb.UsbServices;
 
-import de.ailis.usb4java.libusb.Device;
-import de.ailis.usb4java.libusb.DeviceDescriptor;
-import de.ailis.usb4java.libusb.DeviceHandle;
-import de.ailis.usb4java.libusb.DeviceList;
-import de.ailis.usb4java.libusb.Interface;
-import de.ailis.usb4java.libusb.LibUsb;
+import org.usb4java.Device;
+import org.usb4java.DeviceDescriptor;
+import org.usb4java.DeviceHandle;
+import org.usb4java.DeviceList;
+import org.usb4java.Interface;
+import org.usb4java.LibUsb;
 
 /**
 * Tests and manages USB devices
@@ -179,7 +179,7 @@ public class DeviceManager{
 		
 		//RECIEVE
 		ByteBuffer returned = ByteBuffer.allocateDirect(64);
-		result = LibUsb.bulkTransfer(handles[ID], MC_IN_ENDPOINT, returned, IntBuffer.wrap(new int[64]), 5000);
+		result = LibUsb.bulkTransfer(handles[ID], (byte) MC_IN_ENDPOINT, returned, IntBuffer.wrap(new int[64]), 5000);
 		if(result != 0){
 			screen.print("Data In Error : (DevManager.sendData() receiving");
 			if(result == LibUsb.ERROR_TIMEOUT){
